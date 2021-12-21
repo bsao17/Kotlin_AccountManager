@@ -1,27 +1,27 @@
-fun main() {
-    var firstname: String = "Bruno"
-    println(firstname)
+import java.util.*
 
-    fun entryAge(age: Int) {
-        when (age) {
-            in 0..18 -> println("Too young, don't enter !!!")
-            in 18..60 -> println("It's okay, you can enter in discotheque")
-            in 60..1000 -> println("Ohhh Too old, come back when you should be young again !!!")
+class Account(val depot: Int){
+    var balance: Int = depot
+
+    fun retrieveMoney(value: Int){
+        if(balance > 0 && value < balance){
+            var solde: Int = this.balance-value
+            println("A la date du : ${Date().toLocaleString()}, Vous avez retiré ${value} €, il vous reste ${solde}€ sur votre compte")
+        }else{
+            println("A la date du : ${Date().toLocaleString()}, votre solde de compte est insuffisant !")
         }
     }
-
-    entryAge(14)
-    Enzo.getAge()
-    Bruno.getAge()
-}
-
-class Person(age: Number) {
-    private var itAge: Number = age
-
-    fun getAge() {
-        println(itAge)
+    fun AddMoney(value: Int){
+        var newSolde: Int = this.balance + value
+        println("A la date du : ${Date().toLocaleString()}, Après un dépot de $value€, il vous reste maintenant $newSolde€ sur votre compte")
     }
 }
+ var BrunoAccount = Account(50)
+var EnzoAccount = Account(100)
 
-val Enzo = Person(17)
-val Bruno = Person(47)
+fun main(){
+    BrunoAccount.retrieveMoney(60)
+    EnzoAccount.retrieveMoney(20)
+    BrunoAccount.AddMoney(50)
+
+}
