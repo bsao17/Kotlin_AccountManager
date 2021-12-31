@@ -35,33 +35,49 @@ open class CurrentAccount(depot: Int) : CurrentAccountActions {
     }
 
     override fun readAccount() {
-        println("A la date du : ${Date().toLocaleString()}, le solde de votre compte est de $balance€ ")
+        println("A la date du : ${Date().toLocaleString()}, le solde de votre compte est de ${this.balance}€ ")
     }
 }
 
 // Professional Account
 class ProfessionalAccount(depot: Int) : CurrentAccount(depot), ProfessionalAccountActions {
     private var balance: Int = depot
+    private var overdraft: Int = 0
+
+    override fun retrieveMoney(value: Int) {
+        if (value < overdraft) {
+            var solde: Int = this.balance - value
+            println(
+                "A la date du : ${Date().toLocaleString()}, Vous avez retiré ${value} €, il vous reste ${solde}€ " +
+                        "sur votre compte"
+            )
+        } else {
+            println("A la date du : ${Date().toLocaleString()}, votre solde de compte est insuffisant !")
+        }
+    }
 
     override fun readAccount() {
-        println("A la date du : ${Date().toLocaleString()}, le solde de votre compte professionnel est de $balance€ ")
+        println("A la date du : ${Date().toLocaleString()}, le solde de votre compte professionnel est de ${this.balance}€ ")
     }
 
     override fun overdraftPossibilities(value: Int) {
-        println("Would you really delete all ?")
+        overdraft = balance - value
+        println(overdraft)
     }
 }
 
 
 var BrunoAccount = CurrentAccount(900)
 var EnzoAccount = CurrentAccount(200)
-var FreelanceBrunoMehddeb = ProfessionalAccount(5000)
+var FreelanceBrunoMehddeb = ProfessionalAccount(1000)
 
 
 fun main() {
     BrunoAccount.addMoney(50)
     BrunoAccount.readAccount()
     EnzoAccount.readAccount()
-    FreelanceBrunoMehddeb.addMoney(1000)
     FreelanceBrunoMehddeb.readAccount()
+    FreelanceBrunoMehddeb.overdraftPossibilities(3000)
+    FreelanceBrunoMehddeb.readAccount()
+    FreelanceBrunoMehddeb.retrieveMoney(2000)
 }
